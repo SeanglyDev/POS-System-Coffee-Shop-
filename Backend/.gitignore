@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+coverage/
+.idea/
+.vscode/

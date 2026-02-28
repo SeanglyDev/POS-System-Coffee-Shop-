@@ -1,0 +1,720 @@
+openapi: 3.0.0
+info:
+  title: POS System  Coffee Shop API
+  version: 1.0.0
+  description: API documentation
+
+servers:
+  - url: http://localhost:3000
+
+# 🔐 GLOBAL JWT SECURITY
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Categories
+  - name: Products
+  - name: Stock
+  - name: Order
+  - name: Payment
+
+paths:
+  /:
+    get:
+      summary: Server health check
+      security: []
+      responses:
+        "200":
+          description: OK 
+          
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login (Get JWT token)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  example: admin@coffee.com
+                password:
+                  type: string
+                  example: Admin@123
+      responses:
+        "200":
+          description: Login success
+
+  /api/auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Reset password (simple)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, newPassword]
+              properties:
+                email:
+                  type: string
+                  example: admin@coffee.com
+                newPassword:
+                  type: string
+                  example: NewPass@123
+      responses:
+        "200":
+          description: Password updated successfully
+        "400":
+          description: Email and newPassword required
+        "404":
+          description: User not found
+
+  /api/users/register:
+    post:
+      tags: [Users]
+      summary: Register user (Admin only)
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Get all users (Admin only)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /api/users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user by ID (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    put:
+      tags: [Users]
+      summary: Update user by ID (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    delete:
+      tags: [Users]
+      summary: Delete user by ID (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+
+  /api/categories:
+    get:
+      tags: [Categories]
+      summary: Get all categories
+      responses:
+        "200":
+          description: OK
+    post:
+      tags: [Categories]
+      summary: Create category (Admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
+      responses:
+        "201":
+          description: Created
+  /api/categories/{id}:
+    get:
+      tags: [Categories]
+      summary: Get category by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    put:
+      tags: [Categories]
+      summary: Update category (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryUpdate"
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags: [Categories]
+      summary: Delete category (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+
+  /api/product:
+    get:
+      tags: [Products]
+      summary: Get all products
+      responses:
+        "200":
+          description: OK
+    post:
+      tags: [Products]
+      summary: Create product (Admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "201":
+          description: Created
+
+  /api/product/{id}:
+    put:
+      tags: [Products]
+      summary: Update product (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductUpdate"
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags: [Products]
+      summary: Delete product (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+
+  /api/stock:
+    get:
+      tags: [Stock]
+      summary: Get all stock (Admin / Staff)
+      responses:
+        "200":
+          description: OK
+    post:
+      tags: [Stock]
+      summary: Create stock (Admin / Staff)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StockInput"
+      responses:
+        "201":
+          description: Created
+  /api/stock/{id}:
+    get:
+      tags: [Stock]
+      summary: Get stock by ID (Admin / Staff)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    put:
+      tags: [Stock]
+      summary: Update stock (Admin / Staff)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StockInput"
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags: [Stock]
+      summary: Delete stock (Admin / Staff)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+
+  /api/order:
+    get:
+      tags: [Order]
+      summary: Get all orders (Admin / Staff)
+      responses:
+        "200":
+          description: OK
+    post:
+      tags: [Order]
+      summary: Create order (Admin / Staff)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderCreate"
+      responses:
+        "201":
+          description: Created
+  /api/order/{id}:
+    get:
+      tags: [Order]
+      summary: Get order by ID (Admin / Staff)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    put:
+      tags: [Order]
+      summary: Update order status (Admin / Staff)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderUpdate"
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags: [Order]
+      summary: Delete order (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+
+  /api/payment:
+    get:
+      tags: [Payment]
+      summary: Get all payments (Admin / Staff)
+      responses:
+        "200":
+          description: OK
+    post:
+      tags: [Payment]
+      summary: Create payment (Admin / Staff)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentCreate"
+      responses:
+        "201":
+          description: Created
+  /api/payment/{id}:
+    get:
+      tags: [Payment]
+      summary: Get payment by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    put:
+      tags: [Payment]
+      summary: Update payment status (Admin / Staff)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentUpdate"
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags: [Payment]
+      summary: Delete payment (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+
+components:
+  # 🔐 JWT Bearer Auth
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 65ffabc123
+        image_Url:
+          type: string
+          example: https://example.com/avatar.png
+        firstName:
+          type: string
+          example: Admin
+        lastName:
+          type: string
+          example: User
+        email:
+          type: string
+          example: admin@coffee.com
+        gender:
+          type: string
+          example: male
+        phoneNumber:
+          type: string
+          example: "0123456789"
+        dob:
+          type: string
+          format: date-time
+          example: "2000-01-01T00:00:00.000Z"
+        address:
+          type: string
+          example: Phnom Penh
+        role:
+          type: string
+          enum: [admin, staff]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserInput:
+      type: object
+      required:
+        - image_Url
+        - firstName
+        - lastName
+        - email
+        - password
+        - gender
+        - phoneNumber
+        - dob
+        - address
+      properties:
+        image_Url:
+          type: string
+          example: https://example.com/avatar.png
+        firstName:
+          type: string
+          example: Admin
+        lastName:
+          type: string
+          example: User
+        email:
+          type: string
+          example: admin@coffee.com
+        password:
+          type: string
+          example: Admin@123
+        gender:
+          type: string
+          enum: [male, female, other]
+          example: male
+        phoneNumber:
+          type: string
+          example: "0123456789"
+        dob:
+          type: string
+          format: date-time
+          example: "2000-01-01T00:00:00.000Z"
+        address:
+          type: string
+          example: Phnom Penh
+        role:
+          type: string
+          enum: [admin, staff]
+          example: admin
+
+    UserUpdate:
+      type: object
+      properties:
+        image_Url:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        gender:
+          type: string
+        phoneNumber:
+          type: string
+        dob:
+          type: string
+          format: date-time
+        address:
+          type: string
+        role:
+          type: string
+          enum: [admin, staff]
+
+    CategoryInput:
+      type: object
+      required: [categoriesName, description]
+      properties:
+        categoriesName:
+          type: string
+          example: Coffee
+        description:
+          type: string
+          example: Hot and cold coffee menu
+        status:
+          type: boolean
+          example: true
+
+    CategoryUpdate:
+      type: object
+      properties:
+        categoriesName:
+          type: string
+          example: Coffee
+        description:
+          type: string
+          example: Hot and cold coffee menu
+        status:
+          type: boolean
+          example: true
+
+    ProductInput:
+      type: object
+      required: [image_URL, productName, price]
+      properties:
+        image_URL:
+          type: string
+          example: https://example.com/matcha.png
+        productName:
+          type: string
+          example: Matcha Latte
+        categories:
+          type: string
+          example: 65ffabc123
+        price:
+          type: number
+          example: 3.5
+        stock:
+          type: number
+          example: 20
+        description:
+          type: string
+          example: Fresh matcha with milk
+
+    ProductUpdate:
+      type: object
+      properties:
+        image_URL:
+          type: string
+        productName:
+          type: string
+        categories:
+          type: string
+        price:
+          type: number
+        stock:
+          type: number
+        description:
+          type: string
+        status:
+          type: boolean
+
+    StockInput:
+      type: object
+      required: [product, quantity, type]
+      properties:
+        product:
+          type: string
+          example: 65ffabc123
+        quantity:
+          type: number
+          example: 10
+        type:
+          type: string
+          enum: [IN, OUT]
+        note:
+          type: string
+          example: Restock from supplier
+
+    OrderItemInput:
+      type: object
+      required: [product, qty]
+      properties:
+        product:
+          type: string
+        qty:
+          type: number
+
+    OrderCreate:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItemInput"
+
+    OrderUpdate:
+      type: object
+      properties:
+        orderStatus:
+          type: string
+          enum: [Pending, Confirmed, Completed, Cancelled]
+          example: Completed
+
+    PaymentCreate:
+      type: object
+      required: [orderId, paymentMethod]
+      properties:
+        orderId:
+          type: string
+        paymentMethod:
+          type: string
+          enum: [Cash, QR Bank, ABA, Wing, Visa, Card]
+
+    PaymentUpdate:
+      type: object
+      properties:
+        paymentStatus:
+          type: string
+          enum: [Pending, Paid, Failed]
+          example: Paid
