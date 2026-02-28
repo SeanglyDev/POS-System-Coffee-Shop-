@@ -1,0 +1,81 @@
+<div class="item-page flex h-full flex-col gap-6">
+  <div class="rounded-3xl border border-[var(--coffee-border)] bg-[var(--panel)] p-4 shadow-md backdrop-blur-xl">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <button class="rounded-xl bg-[var(--coffee-ink)] px-3 py-2 text-sm font-semibold text-[var(--coffee-cream)]">Menu</button>
+        <p class="font-display text-xl font-semibold text-[var(--coffee-ink)]">Coffee Counter</p>
+      </div>
+      <div class="flex flex-1 items-center gap-3 sm:justify-end">
+        <div class="relative w-full max-w-sm">
+          <input
+            type="search"
+            placeholder="Search drinks, pastries..."
+            (input)="updateSearch($any($event.target).value)"
+            class="w-full rounded-2xl border border-[var(--coffee-border)] bg-[var(--coffee-input)] px-4 py-2.5 pr-10 text-sm text-[var(--coffee-ink)]
+                   placeholder:text-[var(--coffee-muted)] focus:border-[var(--coffee-caramel)] focus:ring-2 focus:ring-[var(--coffee-latte)] outline-none"
+          />
+          <span class="absolute right-3 top-2.5 text-[var(--coffee-caramel)]">⌕</span>
+        </div>
+        <button class="hidden sm:inline-flex rounded-xl border border-[var(--coffee-border)] px-4 py-2 text-sm text-[var(--coffee-muted)] hover:bg-[var(--surface)]">
+          Filters
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--coffee-border)] pt-3">
+      @for (categoryName of categoryNames; track categoryName) {
+        <button
+          type="button"
+          (click)="selectCategory(categoryName)"
+          class="rounded-lg px-4 py-2 text-xs font-semibold transition"
+          [ngClass]="
+            isSelectedCategory(categoryName)
+              ? 'bg-[var(--coffee-ink)] text-[var(--coffee-cream)]'
+              : 'border border-[var(--coffee-border)] text-[var(--coffee-muted)] hover:bg-[var(--surface)]'
+          "
+        >
+          {{ categoryName }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="rounded-3xl border border-[var(--coffee-border)] bg-[var(--panel)] p-4 shadow-md backdrop-blur-xl h-[520px] sm:h-[560px] lg:h-[720px] w-[1000px] overflow-y-auto smooth-scroll pr-1">
+    @if (loading) {
+      <div class="flex h-full items-center justify-center text-sm text-[var(--coffee-muted)]">Loading products...</div>
+    } @else if (errorMessage) {
+      <div class="flex h-full items-center justify-center text-sm text-[var(--coffee-muted)]">{{ errorMessage }}</div>
+    } @else {
+      <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        @for (item of filteredProducts; track item._id ?? item.id) {
+          <article
+            (click)="addToCart(item)"
+            class="group relative cursor-pointer overflow-hidden rounded-2xl border border-[var(--coffee-border)] bg-[var(--coffee-card)] shadow-sm
+                   transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+            <div class="relative h-28 w-full overflow-hidden">
+              <img
+                [src]="item.image_URL || '/image1.jpg'"
+                [alt]="item.productName"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <span class="absolute right-2 top-2 rounded-md bg-[var(--coffee-ink)] px-2 py-1 text-[15px] font-semibold text-[var(--coffee-cream)]">
+                ${{ item.price | number:'1.2-2' }}
+              </span>
+            </div>
+            <div class="px-3 py-2">
+              <p class="text-[20px] font-semibold text-[var(--coffee-ink)] truncate">{{ item.productName }}</p>
+              <p class="text-[20px] text-[var(--coffee-muted)] truncate">
+                {{ getCategoryName(item) }}
+              </p>
+            </div>
+          </article>
+        }
+      </div>
+      @if (!filteredProducts.length) {
+        <div class="flex h-full items-center justify-center text-sm text-[var(--coffee-muted)]">
+          No products found for {{ selectedCategory }}.
+        </div>
+      }
+    }
+  </div>
+</div>

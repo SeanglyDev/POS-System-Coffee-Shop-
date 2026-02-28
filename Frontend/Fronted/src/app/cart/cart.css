@@ -1,0 +1,52 @@
+.cart-page .shadow-sm {
+  box-shadow: 0 10px 30px rgba(47, 24, 11, 0.12);
+}
+.quantity-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid #ead8c7;
+  background: #fff;
+  font-weight: 700;
+  color: #5c4030;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+.quantity-btn:hover {
+  border-color: #b37a53;
+  color: #2b1a12;
+  background: #f6eee3;
+}
+
+.payment-backdrop {
+  animation: fade-in 180ms ease-out;
+}
+
+.payment-panel {
+  animation: pop-in 220ms ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.cart-page {
+  margin-top: 10px;
+  height: 900px;
+  width: 500px;
+}

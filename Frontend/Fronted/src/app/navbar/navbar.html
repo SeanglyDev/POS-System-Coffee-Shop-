@@ -1,0 +1,96 @@
+<header class="bg-gradient-to-r from-[#3b251a] via-[#583621] to-[#7a4a2f] text-[#f9f3ec] px-5 py-5 shadow-xl">
+  <div class="flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f4e7da] text-[#3b251a] font-display text-2xl shadow-lg">
+        C
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-[0.35em] text-[#f2dac2]">Coffee Atelier</p>
+        <span class="text-xl sm:text-2xl font-display font-bold tracking-wide">Caffe Ember</span>
+      </div>
+    </div>
+
+    <div class="hidden sm:flex items-center gap-2 sm:gap-3">
+      <div class="relative">
+        <input
+          type="text"
+          placeholder="Find your roast..."
+          class="w-56 lg:w-72 rounded-xl bg-white/10 border border-white/25 px-4 py-2.5 text-sm placeholder-white/70 focus:border-[#f2dac2] focus:bg-white/20 focus:outline-none transition"
+        />
+        <span class="pointer-events-none absolute right-3 top-2.5 text-lg text-[#f2dac2]">☕</span>
+      </div>
+      <button
+        class="rounded-xl bg-[#f4e7da] text-[#3b251a] px-4 py-2 text-sm font-semibold shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+      >
+        Brew Finder
+      </button>
+    </div>
+
+    <!-- // mobile -->
+    <button
+      type="button"
+      class="menu-toggle sm:hidden rounded-xl border border-white/30 bg-white/10 p-2 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[#f2dac2]"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="sr-only">Toggle navigation</span>
+      <span class="menu-bar" [class.open]="menuOpen"></span>
+      <span class="menu-bar" [class.open]="menuOpen"></span>
+      <span class="menu-bar" [class.open]="menuOpen"></span>
+    </button>
+  </div>
+
+  <div class="mt-5 border-t border-white/20 pt-5">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <nav
+        class="nav-links flex-col flex-wrap gap-2 sm:flex-row sm:items-center sm:gap-3"
+        [class.open]="menuOpen"
+      >
+      @for(item of navLinks; track item){
+        <a href="{{ item.href }}" 
+        (click)="closeMenu()"  
+        class="rounded-xl px-3 py-2 text-sm font-semibold text-[#f2dac2] hover:bg-white/15 hover:text-white transition"
+        >{{ item.label }}</a>
+      }
+      </nav>
+      <div class="desktop-actions items-center gap-2 sm:gap-3">
+        <button
+          class="rounded-xl bg-white text-[#3b251a] px-4 py-2 text-sm font-semibold shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+        >
+          Order Pickup
+        </button>
+      </div>
+
+      <div
+        class="mobile-panel flex flex-col gap-3 sm:hidden"
+        [class.open]="menuOpen"
+      >
+        <div class="flex flex-col gap-2">
+          <label for="mobile-search" class="text-xs uppercase tracking-wide text-[#f2dac2]">Search</label>
+          <div class="flex flex-wrap items-center gap-2">
+            <input
+              id="mobile-search"
+              type="text"
+              placeholder="Find your roast..."
+              class="w-full rounded-xl bg-white/10 border border-white/25 px-3 py-2 text-sm placeholder-white/70 focus:border-[#f2dac2] focus:bg-white/15 focus:outline-none transition"
+            />
+            <button
+              class="w-full rounded-xl bg-white text-[#3b251a] px-3 py-2 text-sm font-semibold shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+            >
+              Brew Finder
+            </button>
+          </div>
+        </div>
+
+        <button
+          class="w-full rounded-xl border border-white/40 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+          (click)="closeMenu()"
+        >
+          Order Pickup
+        </button>
+      </div>
+    </div>
+
+  </div>
+</header>

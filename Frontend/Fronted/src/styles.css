@@ -1,0 +1,96 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Sora:wght@300;400;500;600&display=swap");
+
+:root {
+  --coffee-ink: #2b1a12;
+  --coffee-brown: #4b2d1f;
+  --coffee-caramel: #b37a53;
+  --coffee-cream: #f6eee3;
+  --coffee-latte: #e6d3bf;
+  --coffee-sage: #9fb3a5;
+  --surface: #f6eee3;
+  --surface-soft: #efe0d2;
+  --panel: rgba(255, 255, 255, 0.85);
+  --panel-strong: rgba(255, 255, 255, 0.95);
+  --coffee-muted: #7b5a44;
+  --coffee-border: #ead8c7;
+  --coffee-card: #f7efe6;
+  --coffee-input: #ffffff;
+}
+
+body {
+  font-family: "Sora", "Segoe UI", Tahoma, sans-serif;
+  color: var(--coffee-ink);
+  background: radial-gradient(circle at top left, #f8f1e9 0%, #f4e7da 38%, #efe0d2 100%);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --coffee-ink: #f6eee3;
+    --coffee-brown: #caa889;
+    --coffee-caramel: #d6a57a;
+    --coffee-cream: #2a1a13;
+    --coffee-latte: #3a241a;
+    --coffee-sage: #7d8f84;
+    --surface: #1f1410;
+    --surface-soft: #2a1b14;
+    --panel: rgba(30, 20, 15, 0.85);
+    --panel-strong: rgba(30, 20, 15, 0.95);
+    --coffee-muted: #c7b1a0;
+    --coffee-border: #3b2a22;
+    --coffee-card: #2a1b14;
+    --coffee-input: #1f1410;
+  }
+
+  body {
+    background: radial-gradient(circle at top left, #231711 0%, #1a120e 38%, #140d0a 100%);
+    color: var(--coffee-ink);
+  }
+}
+
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.font-display {
+  font-family: "Playfair Display", "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+.float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.float-delayed {
+  animation: float-slow 10s ease-in-out infinite 1.5s;
+}
+
+.fade-up {
+  animation: fade-up 0.8s ease both;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

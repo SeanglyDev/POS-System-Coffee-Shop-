@@ -1,0 +1,97 @@
+/* Small styling for the hamburger animation */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-toggle .menu-bar {
+  display: block;
+  height: 2px;
+  width: 22px;
+  border-radius: 9999px;
+  background: #f6eee3;
+  transition: transform 0.25s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.menu-toggle .menu-bar.open:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle .menu-bar.open:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle .menu-bar.open:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Fallback responsive handling if Tailwind utilities are not present */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: max-height 0.3s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.nav-links.open {
+  max-height: 320px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.desktop-actions {
+  display: none;
+}
+
+.mobile-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: max-height 0.3s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.mobile-panel.open {
+  max-height: 420px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (min-width: 640px) {
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    max-height: none;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .desktop-actions {
+    display: flex;
+  }
+
+  .mobile-panel {
+    display: none;
+    max-height: none;
+  }
+}
