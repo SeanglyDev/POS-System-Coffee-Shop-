@@ -1,0 +1,256 @@
+* {
+  box-sizing: border-box;
+}
+
+.register-shell {
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(21, 124, 92, 0.22), transparent 42%),
+    radial-gradient(circle at 85% 82%, rgba(12, 38, 72, 0.2), transparent 40%),
+    linear-gradient(120deg, #eef5ef 0%, #edf4f9 50%, #f2eee7 100%);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  color: #1d2327;
+}
+
+.register-layout {
+  width: min(1040px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 26px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 28px 60px rgba(17, 31, 40, 0.14);
+}
+
+.intro-panel {
+  padding: 42px;
+  background:
+    linear-gradient(155deg, rgba(12, 38, 72, 0.96), rgba(21, 77, 96, 0.95)),
+    linear-gradient(20deg, rgba(21, 124, 92, 0.2), transparent 60%);
+  color: #edf5fa;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.badge {
+  margin: 0;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.intro-panel h1 {
+  margin: 0;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.08;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.intro-copy {
+  margin: 0;
+  line-height: 1.65;
+  color: rgba(237, 245, 250, 0.9);
+}
+
+.intro-points {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+  color: rgba(237, 245, 250, 0.92);
+}
+
+.register-card {
+  padding: 34px 28px;
+  background: linear-gradient(160deg, #ffffff 0%, #f6fbff 100%);
+  display: grid;
+  align-content: center;
+  gap: 12px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #157c5c;
+  font-weight: 800;
+}
+
+.register-card h2 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(28px, 2.2vw, 36px);
+  color: #132338;
+}
+
+.subhead {
+  margin: 0 0 8px;
+  color: #637083;
+  line-height: 1.55;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: #233449;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(20, 45, 71, 0.18);
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 13px;
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #157c5c;
+  box-shadow: 0 0 0 3px rgba(21, 124, 92, 0.18);
+}
+
+.submit-btn {
+  margin-top: 6px;
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 16px;
+  background: linear-gradient(140deg, #157c5c, #125f55);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.form-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #9f2d24;
+  background: rgba(205, 67, 53, 0.14);
+}
+
+.form-success {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #0f634f;
+  background: rgba(21, 124, 92, 0.14);
+}
+
+.foot-note {
+  margin: 6px 0 0;
+  color: #617183;
+}
+
+.foot-note a {
+  color: #0f5d92;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 940px) {
+  .register-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-panel {
+    padding: 30px;
+  }
+
+  .register-card {
+    padding: 30px 22px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .span-2 {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .register-shell {
+    padding: 12px;
+  }
+
+  .intro-panel {
+    padding: 22px 18px;
+  }
+
+  .register-card {
+    padding: 22px 18px;
+  }
+}
+
+:host-context(.dark) .register-shell {
+  background:
+    radial-gradient(circle at 18% 14%, rgba(21, 124, 92, 0.13), transparent 42%),
+    radial-gradient(circle at 85% 82%, rgba(12, 38, 72, 0.25), transparent 40%),
+    linear-gradient(120deg, #101722 0%, #111a28 50%, #151b25 100%);
+  color: #e3eaf6;
+}
+
+:host-context(.dark) .register-layout {
+  background: rgba(16, 23, 34, 0.84);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:host-context(.dark) .register-card {
+  background: linear-gradient(160deg, #131c2c 0%, #10202e 100%);
+}
+
+:host-context(.dark) .register-card h2,
+:host-context(.dark) .field,
+:host-context(.dark) .foot-note,
+:host-context(.dark) .subhead {
+  color: #d7e2f2;
+}
+
+:host-context(.dark) .field input,
+:host-context(.dark) .field select,
+:host-context(.dark) .field textarea {
+  background: #0d1521;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #edf4ff;
+}

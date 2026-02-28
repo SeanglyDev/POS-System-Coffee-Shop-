@@ -1,0 +1,75 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  position: relative;
+  padding: 18px 18px 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(18, 21, 30, 0.08);
+  box-shadow: 0 16px 28px rgba(20, 24, 33, 0.08);
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f26a4b, #f4b740);
+}
+
+.card:nth-child(2)::before {
+  background: linear-gradient(90deg, #2f8f83, #8dd7c5);
+}
+
+.card:nth-child(3)::before {
+  background: linear-gradient(90deg, #6a64f1, #9aa8ff);
+}
+
+.card:nth-child(4)::before {
+  background: linear-gradient(90deg, #15171d, #54596c);
+}
+
+.cards h2 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #15171d;
+}
+
+.card p {
+  margin: 0;
+  color: #54596c;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+:host-context(.dark) .card {
+  background: #141722;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 28px rgba(5, 7, 12, 0.4);
+}
+
+:host-context(.dark) .cards h2 {
+  color: #f4f2ed;
+}
+
+:host-context(.dark) .card p {
+  color: #b9b5b0;
+}
+
+@media (max-width: 640px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,288 @@
+.staff-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.staff-header h1 {
+  margin: 2px 0 0;
+  font-size: 28px;
+  color: #172133;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #2c5ea8;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.subhead {
+  margin: 8px 0 0;
+  color: #5d6d82;
+}
+
+.state-card {
+  background: #fff;
+  border: 1px solid rgba(39, 72, 121, 0.14);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #22324b;
+}
+
+.state-card.error {
+  border-color: rgba(178, 55, 46, 0.2);
+  color: #9a2b24;
+  background: rgba(178, 55, 46, 0.05);
+}
+
+.table-wrap {
+  overflow: auto;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(39, 72, 121, 0.14);
+}
+
+.staff-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 980px;
+}
+
+.staff-table th,
+.staff-table td {
+  text-align: left;
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(39, 72, 121, 0.1);
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.staff-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #52637b;
+  background: #f6f9ff;
+  position: sticky;
+  top: 0;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(39, 72, 121, 0.18);
+}
+
+.avatar-fallback {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #5b6f88;
+  background: #eef3fb;
+  border: 1px solid rgba(39, 72, 121, 0.16);
+}
+
+.role {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  text-transform: capitalize;
+  background: rgba(44, 94, 168, 0.12);
+  color: #234b88;
+  font-weight: 700;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  border: 1px solid rgba(39, 72, 121, 0.2);
+  background: #fff;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.action-btn.edit {
+  background: rgba(44, 94, 168, 0.12);
+  color: #234b88;
+  border-color: rgba(44, 94, 168, 0.35);
+}
+
+.action-btn.delete {
+  background: rgba(211, 56, 44, 0.11);
+  color: #a02d24;
+  border-color: rgba(211, 56, 44, 0.35);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 90;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(12, 18, 29, 0.5);
+}
+
+.modal-card {
+  position: relative;
+  width: min(760px, 92vw);
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(39, 72, 121, 0.14);
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-head h3 {
+  margin: 0;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.modal-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: #5a6e8a;
+}
+
+.modal-grid input,
+.modal-grid select,
+.modal-grid textarea {
+  border: 1px solid rgba(39, 72, 121, 0.16);
+  border-radius: 10px;
+  padding: 9px 10px;
+  font: inherit;
+}
+
+.modal-grid .full {
+  grid-column: 1 / -1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+:host-context(.dark) .staff-header h1 {
+  color: #e7edf8;
+}
+
+:host-context(.dark) .subhead {
+  color: #aab7cc;
+}
+
+:host-context(.dark) .state-card {
+  background: #121a27;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #d3def0;
+}
+
+:host-context(.dark) .state-card.error {
+  border-color: rgba(214, 93, 84, 0.32);
+  color: #ffb6ac;
+  background: rgba(178, 55, 46, 0.14);
+}
+
+:host-context(.dark) .table-wrap {
+  background: #121a27;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:host-context(.dark) .staff-table th {
+  background: #0f1622;
+  color: #b8c7df;
+}
+
+:host-context(.dark) .staff-table td {
+  color: #e3ebf8;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:host-context(.dark) .avatar {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+:host-context(.dark) .avatar-fallback {
+  background: #1a2435;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #b6c6df;
+}
+
+:host-context(.dark) .role {
+  background: rgba(66, 130, 231, 0.22);
+  color: #c6ddff;
+}
+
+:host-context(.dark) .action-btn {
+  background: #111927;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #dbe6fa;
+}
+
+:host-context(.dark) .action-btn.edit {
+  background: rgba(44, 94, 168, 0.28);
+}
+
+:host-context(.dark) .action-btn.delete {
+  background: rgba(211, 56, 44, 0.24);
+  color: #ffc0b8;
+}
+
+:host-context(.dark) .modal-card {
+  background: #101927;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:host-context(.dark) .modal-head h3,
+:host-context(.dark) .close-btn {
+  color: #e4ecfa;
+}
+
+:host-context(.dark) .modal-grid label {
+  color: #9eb0cc;
+}
+
+:host-context(.dark) .modal-grid input,
+:host-context(.dark) .modal-grid select,
+:host-context(.dark) .modal-grid textarea {
+  background: #0d141f;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e3ecfb;
+}

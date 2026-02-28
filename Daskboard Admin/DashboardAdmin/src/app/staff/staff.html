@@ -1,0 +1,117 @@
+<section class="staff-shell">
+  <header class="staff-header">
+    <p class="eyebrow">Staff</p>
+    <h1>User Table</h1>
+  </header>
+
+  @if (loading) {
+    <article class="state-card">
+      Loading users...
+    </article>
+  }
+
+  @if (!loading && errorMessage) {
+    <article class="state-card error">
+      {{ errorMessage }}
+    </article>
+  }
+
+  @if (!loading && !errorMessage) {
+    <div class="table-wrap">
+      @if (users.length) {
+        <table class="staff-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Phone</th>
+              <th>DOB</th>
+              <th>Role</th>
+              <th>Address</th>
+              @if (isAdmin) {
+                <th>Action</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of users; track getUserId(u)) {
+              <tr>
+                <td>
+                  @if (u.image_Url) {
+                    <img class="avatar" [src]="u.image_Url" alt="avatar" />
+                  } @else {
+                    <div class="avatar-fallback">-</div>
+                  }
+                </td>
+                <td>{{ (u.firstName || '') + ' ' + (u.lastName || '') }}</td>
+                <td>{{ u.email || '-' }}</td>
+                <td>{{ u.gender || '-' }}</td>
+                <td>{{ u.phoneNumber || '-' }}</td>
+                <td>{{ u.dob ? (u.dob | date:'mediumDate') : '-' }}</td>
+                <td><span class="role">{{ u.role || '-' }}</span></td>
+                <td>{{ u.address || '-' }}</td>
+                @if (isAdmin) {
+                  <td>
+                    <div class="btn-row">
+                      <button class="action-btn edit" type="button" (click)="openEdit(u)">Edit</button>
+                      <button class="action-btn delete" type="button" (click)="deleteUser(u)">Delete</button>
+                    </div>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <article class="state-card">
+          No users found.
+        </article>
+      }
+    </div>
+  }
+</section>
+
+@if (showEditModal) {
+  <div class="modal">
+    <button class="modal-backdrop" type="button" (click)="closeEdit()"></button>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Edit Staff</h3>
+        <button type="button" class="close-btn" (click)="closeEdit()">x</button>
+      </div>
+
+      <div class="modal-grid">
+        <label>First Name <input [(ngModel)]="form.firstName" /></label>
+        <label>Last Name <input [(ngModel)]="form.lastName" /></label>
+        <label>Email <input [(ngModel)]="form.email" type="email" /></label>
+        <label>Phone <input [(ngModel)]="form.phoneNumber" /></label>
+        <label>
+          Gender
+          <select [(ngModel)]="form.gender">
+            <option value="male">male</option>
+            <option value="female">female</option>
+            <option value="other">other</option>
+          </select>
+        </label>
+        <label>Date of Birth <input [(ngModel)]="form.dob" type="date" /></label>
+        <label>Role
+          <select [(ngModel)]="form.role">
+            <option value="staff">staff</option>
+            <option value="admin">admin</option>
+          </select>
+        </label>
+        <label>Image URL <input [(ngModel)]="form.image_Url" /></label>
+        <label class="full">Address <textarea rows="3" [(ngModel)]="form.address"></textarea></label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="action-btn" type="button" (click)="closeEdit()">Cancel</button>
+        <button class="action-btn edit" type="button" (click)="saveUser()" [disabled]="saving">
+          {{ saving ? 'Saving...' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

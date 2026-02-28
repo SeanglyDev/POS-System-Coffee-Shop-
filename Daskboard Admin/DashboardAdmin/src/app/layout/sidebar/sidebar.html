@@ -1,0 +1,130 @@
+<button class="menu-toggle" type="button" (click)="toggle()">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div class="sidebar" [class.open]="isOpen">
+  <button class="overlay" type="button" (click)="close()"></button>
+  <div class="panel">
+    <div class="brand">
+      <div class="brand-mark" aria-label="POS System logo">
+        <img src="logo.jpg" alt="POS System logo">
+      </div>
+      <div class="brand-text">
+        <h2>POS System</h2>
+        <p>Coffee Shop</p>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <p class="nav-label">Main</p>
+
+      @if (canView('dashboard')) {
+        <a class="nav-item"
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        (click)="close()">
+          <lucide-icon name="layout-dashboard"></lucide-icon>
+          Dashboard
+        </a>
+      }
+
+      @if (canView('orders')) {
+        <button class="nav-item"
+        type="button"
+        routerLink="/orders"
+        routerLinkActive="active">
+          <lucide-icon name="receipt-text"></lucide-icon>
+          Orders
+        </button>
+      }
+
+      @if (canView('products')) {
+        <a class="nav-item"
+        routerLink="/product"
+        routerLinkActive="active"
+        (click)="close()">
+          <lucide-icon name="shopping-basket"></lucide-icon>
+          Products
+        </a>
+      }
+
+      @if (canView('categories')) {
+        <button class="nav-item"
+        type="button" routerLink="/categories"
+        routerLinkActive="active"
+        (click)="close()">
+          <lucide-icon name="tags"></lucide-icon>
+          Categories
+        </button>
+      }
+
+      @if (canView('stock')) {
+        <button class="nav-item"
+        type="button" routerLink="/stock"
+        routerLinkActive="active"
+        (click)="close()">
+          <lucide-icon name="boxes"></lucide-icon>
+          Stock
+        </button>
+      }
+
+      @if (canView('payments')) {
+        <button class="nav-item"
+        type="button"
+        routerLink="/payments"
+        routerLinkActive="active"
+        (click)="close()">
+          <lucide-icon name="credit-card"></lucide-icon>
+          Payments
+        </button>
+      }
+    </nav>
+      
+    <nav class="nav">
+      <p class="nav-label">Employees</p>
+      @if (canView('staff')) {
+        <button
+        class="nav-item"
+        type="button"
+        routerLink="/staff"
+        routerLinkActive="active"
+        (click)="close()">
+          <lucide-icon name="users"></lucide-icon>
+          Staff
+        </button>
+      }
+      
+    </nav> 
+    
+    <nav class="nav">
+      <p class="nav-label">Insights</p>
+      @if (canView('reports')) {
+        <button class="nav-item" type="button" routerLink="/reports" routerLinkActive="active" (click)="close()">
+          <lucide-icon name="chart-column"></lucide-icon>
+          Reports
+        </button>
+      }
+      @if (canView('settings')) {
+        <button
+        class="nav-item"
+        type="button"
+        routerLink="/settings"
+        routerLinkActive="active"
+        (click)="close()">
+          <lucide-icon name="settings"></lucide-icon>
+          Settings
+        </button>
+      }
+    </nav>
+  
+    
+    <div class="sidebar-footer">
+      <button class="logout" type="button" (click)="logout()">
+        <lucide-icon name="log-out"></lucide-icon>
+        Log out
+      </button>
+    </div>
+  </div>
+</div>

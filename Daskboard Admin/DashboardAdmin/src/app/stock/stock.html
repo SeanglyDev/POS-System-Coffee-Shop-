@@ -1,0 +1,120 @@
+<section class="stock-shell">
+  <header class="stock-header">
+    <div>
+      <p class="eyebrow">Inventory</p>
+      <h3 class="title">Stock Movements</h3>
+      <p class="subhead">Track stock in/out and current adjustments.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn ghost" type="button">Export</button>
+      @if (isAdmin) {
+        <button class="btn primary" type="button" (click)="openAddModal()">Add Stock</button>
+      }
+    </div>
+  </header>
+
+  <div class="orders-head">
+    <div class="tabs">
+      <button class="tab active" type="button">All</button>
+    </div>
+    <div class="pager">
+      <button class="pager-btn" type="button" (click)="prev()" [disabled]="currentPage === 1">Prev</button>
+      <button class="pager-btn" type="button" (click)="next()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Type</th>
+          <th>Quantity</th>
+          <th>Note</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      @for (item of pagedStock; track item._id) {
+        <tbody>
+          <tr>
+            <td class="product-cell">
+              <img class="product-image" [src]="item.product?.image_URL" [alt]="item.product?.productName" loading="lazy">
+              <span>{{ item.product?.productName ?? '-' }}</span>
+            </td>
+            <td>
+              <span class="pill" [class.in]="item.type === 'IN'" [class.out]="item.type === 'OUT'">
+                {{ item.type }}
+              </span>
+            </td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.note?.length > 40 ? (item.note.substring(0, 40) + '...') : (item.note ?? '-') }}</td>
+            <td>{{ item.createdAt ? item.createdAt.slice(0, 10) : '-' }}</td>
+            <td>{{ item.updatedAt ? item.updatedAt.slice(0, 10) : '-' }}</td>
+            <td>
+              <div class="btn_action">
+                <button class="action view" type="button">View</button>
+                @if (isAdmin) {
+                  <button class="action edit" type="button" (click)="editStock(item)">Edit</button>
+                  <button class="action delete" type="button" (click)="deleteStock(item._id)">Delete</button>
+                }
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      }
+    </table>
+  </div>
+</section>
+
+@if (showAddModal && isAdmin) {
+  <div
+    class="modal"
+    [class.closing]="isClosing"
+    (animationend)="onModalAnimationEnd($event.animationName)"
+  >
+    <button class="modal-backdrop" type="button" (click)="closeAddModal()"></button>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4>{{ editingId ? 'Edit Stock' : 'Add Stock' }}</h4>
+        <button class="modal-close" type="button" (click)="closeAddModal()">x</button>
+      </div>
+      <div class="modal-body">
+        <label>
+          Product
+          <select [(ngModel)]="newStock.product" [disabled]="!!editingId">
+            @for (product of products; track product._id) {
+              <option [value]="product._id">{{ product.productName }}</option>
+            }
+          </select>
+        </label>
+        <label>
+          Type
+          <select [(ngModel)]="newStock.type">
+            <option value="IN">IN</option>
+            <option value="OUT">OUT</option>
+          </select>
+        </label>
+        <label>
+          Quantity
+          <input type="number" placeholder="0" [(ngModel)]="newStock.quantity" />
+        </label>
+        <label>
+          Note
+          <textarea rows="3" placeholder="Optional note" [(ngModel)]="newStock.note"></textarea>
+        </label>
+        <div class="meta-row">
+          <span>Created: Auto date/time</span>
+          <span>Updated: Auto date/time</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn ghost" type="button" (click)="closeAddModal()">Cancel</button>
+        <button class="btn primary" type="button" (click)="saveStock()" [disabled]="saving || !newStock.product || !newStock.quantity">
+          {{ editingId ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

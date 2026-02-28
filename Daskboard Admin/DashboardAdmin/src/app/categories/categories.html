@@ -1,0 +1,97 @@
+<section class="category-table">
+    <div class="category-header">
+      <div>
+        <p class="eyebrow">Catalog</p>
+        <h2>Categories</h2>
+        <p class="subhead">Snapshot of product groups and inventory health.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn ghost" type="button">Manage</button>
+        @if (isAdmin) {
+          <button class="btn primary" type="button" (click)="openAddModal()">Add Category</button>
+        }
+      </div>
+    </div>
+    <div class="pager">
+      <button class="pager-btn" type="button" (click)="prev()" [disabled]="currentPage === 1">Prev</button>
+      <button class="pager-btn" type="button" (click)="next()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+    <div class="category-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        @for (category of pagedCategories; track category._id) {
+        <tbody>
+          <tr>
+            <td class="category-cell">
+              <span class="category-dot"></span>
+              <span>{{ category.categoriesName }}</span>
+            </td>
+            <td>{{ category.description?.length > 40 ? (category.description.substring(0, 40) + '...') : (category.description ?? '—') }}</td>
+            <td><span class="pill ok">{{ category.status ? 'Active' : 'Inactive' }}</span></td>
+            <td>{{ category.createdAt ? category.createdAt.slice(0, 10) : '—' }}</td>
+            <td>{{ category.updatedAt ? category.updatedAt.slice(0, 10) : '—' }}</td>
+            <td>
+              <div class="btn_action">
+                <button class="action view" type="button">View</button>
+                @if (isAdmin) {
+                  <button class="action edit" type="button" (click)="editCategory(category)">Edit</button>
+                  <button class="action edit" type="button" (click)="deleteCategory(category._id)">Delete</button>
+                }
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        }
+      </table>
+    </div>
+  </section>
+
+ @if(showAddModal && isAdmin) {
+   <div
+     class="modal"
+     [class.closing]="isClosing"
+     (animationend)="onModalAnimationEnd($event.animationName)"
+   >
+     <button class="modal-backdrop" type="button" (click)="closeAddModal()"></button>
+     <div class="modal-card">
+       <div class="modal-header">
+         <h4>{{ editingId ? 'Edit Category' : 'Add Category' }}</h4>
+         <button class="modal-close" type="button" (click)="closeAddModal()">×</button>
+       </div>
+       <div class="modal-body">
+         <label>
+           Category Name
+           <input type="text" placeholder="Category name" [(ngModel)]="form.categoriesName" />
+         </label>
+         <label>
+           Description
+           <textarea rows="3" placeholder="Short description" [(ngModel)]="form.description"></textarea>
+         </label>
+         <label class="checkbox-row">
+           <input type="checkbox" [(ngModel)]="form.status" />
+           Status (Active)
+         </label>
+         <div class="meta-row">
+           <span>Created: Auto date/time</span>
+           <span>Updated: Auto date/time</span>
+         </div>
+       </div>
+       <div class="modal-actions">
+         <button class="btn ghost" type="button" (click)="closeAddModal()">Cancel</button>
+         <button class="btn primary" type="button" (click)="saveCategory()" [disabled]="saving || !form.categoriesName || !form.description">
+           {{ editingId ? 'Update' : 'Save' }}
+         </button>
+       </div>
+     </div>
+   </div>
+  
+ }

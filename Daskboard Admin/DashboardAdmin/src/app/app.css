@@ -1,0 +1,34 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f3f0ea, #eef3fb);
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: #15171d;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+:host-context(.dark) .layout {
+  background: radial-gradient(circle at 20% 20%, rgba(242, 106, 75, 0.1), transparent 50%),
+    linear-gradient(135deg, #0e111a, #131826);
+  color: #f4f2ed;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  main {
+    padding: 16px;
+  }
+}

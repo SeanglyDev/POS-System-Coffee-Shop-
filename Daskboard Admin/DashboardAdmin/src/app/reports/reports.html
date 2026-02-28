@@ -1,0 +1,137 @@
+<section class="reports-shell" [class.dark-mode]="isDark">
+  <header class="reports-header no-print">
+    <div>
+      <p class="eyebrow">Reports</p>
+      <h3 class="title">Admin Sales Report</h3>
+      <p class="subhead">Daily sales, sold products, and payment totals.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn ghost" type="button" (click)="fetchReport()">Refresh</button>
+      <button class="btn primary" type="button" (click)="printReport()">Print Report</button>
+    </div>
+  </header>
+
+  <section class="print-meta">
+    <h1>Sales Report</h1>
+    <p>Role: {{ roleLabel }}</p>
+    <p>Generated: {{ generatedAt | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+  </section>
+
+  @if (errorMessage) {
+    <p class="state error">{{ errorMessage }}</p>
+  }
+  @if (loading) {
+    <p class="state loading">Loading report data...</p>
+  }
+
+  @if (!loading) {
+    <div class="summary-grid">
+      <article class="summary-card">
+        <p class="label">Total Amount Today</p>
+        <h4>{{ totalAmountToday | number:'1.0-2' }} $</h4>
+      </article>
+      <article class="summary-card">
+        <p class="label">Total Paid Today</p>
+        <h4>{{ paidAmountToday | number:'1.0-2' }} $</h4>
+      </article>
+      <article class="summary-card">
+        <p class="label">Orders Today</p>
+        <h4>{{ totalOrdersToday }}</h4>
+      </article>
+      <article class="summary-card">
+        <p class="label">Products Sold Today</p>
+        <h4>{{ totalProductsSoldToday }}</h4>
+      </article>
+    </div>
+
+    <div class="view-switch no-print">
+      <div class="tabs">
+        <button class="tab" type="button" [class.active]="viewMode === 'products'" (click)="setView('products')">Top Sold Products</button>
+        <button class="tab" type="button" [class.active]="viewMode === 'orders'" (click)="setView('orders')">Today Orders</button>
+      </div>
+    </div>
+  }
+
+  @if (!loading && viewMode === 'products') {
+    <section class="block">
+      <div class="block-head">
+        <h4>Top Sold Products Today</h4>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of topProductsToday; track item.name; let i = $index) {
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.revenue | number:'1.0-2' }} $</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="empty">No product sales for today.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @if (!loading && viewMode === 'orders') {
+    <section class="block">
+      <div class="block-head">
+        <h4>Today Orders</h4>
+      </div>
+      <div class="orders-head">
+        <div class="pager">
+          <button class="pager-btn" type="button" (click)="prev()" [disabled]="currentPage === 1">
+            Prev
+          </button>
+          <span class="page-label">Page {{ currentPage }} / {{ totalPages }}</span>
+          <button class="pager-btn" type="button" (click)="next()" [disabled]="currentPage === totalPages">
+            Next
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Invoice</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Amount</th>
+              <th>Order Status</th>
+              <th>Payment</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of pagedTodayOrders; track order.invoiceNumber) {
+              <tr>
+                <td>{{ order.invoiceNumber }}</td>
+                <td>{{ order.createdAt ? (order.createdAt | date:'yyyy-MM-dd HH:mm') : '-' }}</td>
+                <td>{{ order.itemCount }}</td>
+                <td>{{ order.amount | number:'1.0-2' }} $</td>
+                <td>{{ order.orderStatus }}</td>
+                <td>{{ order.paymentMethod }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="empty">No orders found for today.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+</section>

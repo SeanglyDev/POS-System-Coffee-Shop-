@@ -1,0 +1,138 @@
+<section class="orders-shell">
+  <header class="orders-header">
+    <div>
+      <p class="eyebrow">Orders</p>
+      <h3 class="title">Order Center</h3>
+      <p class="subhead">Track payments, fulfillment, and delivery status.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn ghost" type="button">Export</button>
+      <button class="btn primary" type="button">Create Order</button>
+    </div>
+  </header>
+  <div class="orders-toolbar">
+    <label class="search">
+      <span>Search</span>
+      <input
+        type="search"
+        placeholder="Search by invoice number"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        aria-label="Search orders by invoice number"
+      />
+    </label>
+    <button class="chip date" type="button">This month</button>
+  </div>
+
+  <div class="orders-cards">
+    <div class="stat-card">
+      <p class="stat-label">Total Orders</p>
+      <h4>{{ totalOrders }}</h4>
+      <span class="stat-trend up">Orders/day: {{ ordersPerDay }}</span>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Product Orders</p>
+      <h4>{{ productOrders }}</h4>
+      <span class="stat-trend up">Top: {{ topProductName }}</span>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Cash</p>
+      <h4>{{ totalCashAmount }} $$</h4>
+      <span class="stat-trend up">Total cash paid</span>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">QR BANK</p>
+      <h4>{{ totalQrBankAmount }} $$</h4>
+      <span class="stat-trend up">Total QR bank paid</span>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Total Failed</p>
+      <h4>{{ failedOrders }}</h4>
+      <span class="stat-trend down">Failed</span>
+    </div>
+  </div>
+
+  <div class="orders-table-card">
+    <div class="table-head">
+      <div>
+        <h4>Recent orders</h4>
+        <p class="table-sub">Last 24 hours</p>
+      </div>
+      <button class="btn ghost small" type="button">View all</button>
+    </div>
+
+    <div class="orders-head">
+      <div class="tabs">
+        <button class="tab active" type="button">All</button>
+      </div>
+      <div class="pager">
+        <button class="pager-btn" type="button" (click)="prev()" [disabled]="currentPage === 1">Prev</button>
+        <button class="pager-btn" type="button" (click)="next()" [disabled]="currentPage === totalPages">Next</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Order Invoive</th>
+          <th>Item Orders</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      @for (order of pagedOrders; track order._id) {
+        <tbody>
+          <tr>
+            <td>{{ order.invoiceNumber }}</td>
+            <td>{{ order.items?.length ?? 0 }}</td>
+            <td>{{ order.createdAt ? (order.createdAt | date:'yyyy-MM-dd HH:mm') : 'â€”' }}</td>
+            <td>{{ order.totalAmount ?? 0 }}</td>
+            <td><span class="pill" [class.paid]="statusClass(order.orderStatus) === 'paid'" [class.pending]="statusClass(order.orderStatus) === 'pending'" [class.failed]="statusClass(order.orderStatus) === 'failed'">{{ order.orderStatus ?? 'Pending' }}</span></td>
+            <td>
+              <div class="btn_action">
+                <button class="action edit" type="button" (click)="openEditModal(order)">Edit</button>
+                @if (isAdmin) {
+                  <button class="action edit" type="button" (click)="deleteOrder(order._id)">Delete</button>
+                }
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      }
+    </table>
+  </div>
+</section>
+
+@if (showEditModal) {
+  <div
+    class="modal"
+    [class.closing]="isClosing"
+    (animationend)="onModalAnimationEnd($event.animationName)"
+  >
+    <button class="modal-backdrop" type="button" (click)="closeEditModal()"></button>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4>Edit Order Status</h4>
+        <button class="modal-close" type="button" (click)="closeEditModal()">Ã—</button>
+      </div>
+      <div class="modal-body">
+        <label>
+          Status
+          <select [(ngModel)]="form.orderStatus">
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Failed">Failed</option>
+          </select>
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn ghost" type="button" (click)="closeEditModal()">Cancel</button>
+        <button class="btn primary" type="button" (click)="saveOrder()" [disabled]="saving">Update</button>
+      </div>
+    </div>
+  </div>
+}

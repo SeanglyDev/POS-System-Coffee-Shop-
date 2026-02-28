@@ -1,0 +1,62 @@
+<div class="orders-head">
+  <div class="tabs">
+    <button class="tab active" type="button">All</button>
+  </div>
+  <div class="pager">
+    <button class="pager-btn" type="button" (click)="prev()" [disabled]="currentPage === 1">Prev</button>
+    <div class="pager-nums">
+      @for (page of pages; track page) {
+        <button
+          class="pager-num"
+          type="button"
+          [class.active]="page === currentPage"
+          (click)="goTo(page)"
+        >
+          {{ page }}
+        </button>
+      }
+    </div>
+    <button class="pager-btn" type="button" (click)="next()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>
+
+<div class="orders-title">All orders</div>
+<table>
+  <thead>
+    <tr>
+      <th>Order Invoive</th>
+      <th>Order Date</th>
+      <th>Item Orders</th>
+      <th>Amount</th>
+      <th>Pay Method</th>
+      <th>Pay Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (o of pagedOrders; track o.id) {
+      <tr>
+        <td>{{ o.invoiceNumber }}</td>
+        <td>{{ o.createdAt ? (o.createdAt | date:'yyyy-MM-dd HH:mm') : '-' }}</td>
+        <td>{{ o.itemCount }}</td>
+        <td>{{ o.amount }}</td>
+        <td>{{ o.payMethod }}</td>
+        <td>
+          <span
+            class="pill status"
+            [class.paid]="o.payStatus === 'Paid'"
+            [class.pending]="o.payStatus === 'Pending'"
+            [class.failed]="o.payStatus === 'Failed'"
+          >
+            {{ o.payStatus }}
+          </span>
+        </td>
+        <td class="btn_action">
+          <button class="action view" type="button">View</button>
+          <button class="action delete" type="button">Delete</button>
+          <button class="action edit" type="button">Edit</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

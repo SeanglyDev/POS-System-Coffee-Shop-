@@ -1,0 +1,115 @@
+<section class="payment-shell">
+  <header class="payment-header">
+    <div>
+      <p class="eyebrow">Payments</p>
+      <h3 class="title">Payment Center</h3>
+      <p class="subhead">Track payment status and invoices.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn ghost" type="button">Export</button>
+    </div>
+  </header>
+
+  <div class="orders-cards">
+    <div class="stat-card">
+      <p class="stat-label">Total Payments</p>
+      <h4>{{ totalPayments }}</h4>
+      <span class="stat-trend up">Paid: {{ paidCount }}</span>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Cash</p>
+      <h4>{{ totalCashAmount }}</h4>
+      <span class="stat-trend up">Total cash received</span>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">QR BANK</p>
+      <h4>{{ totalQrBankAmount }}</h4>
+      <span class="stat-trend up">Total QR bank received</span>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Failed</p>
+      <h4>{{ failedCount }}</h4>
+      <span class="stat-trend down">Need review</span>
+    </div>
+  </div>
+
+  <div class="orders-head">
+    <div class="tabs">
+      <button class="tab active" type="button">All</button>
+    </div>
+    <div class="pager">
+      <button class="pager-btn" type="button" (click)="prev()" [disabled]="currentPage === 1">Prev</button>
+      <button class="pager-btn" type="button" (click)="next()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+  </div>
+
+  <div class="payment-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice</th>
+          <th>Order</th>
+          <th>Method</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Paid</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      @for (payment of pagedPayments; track payment._id) {
+        <tbody>
+          <tr>
+            <td>{{ payment.invoiceNumber ?? payment.order?.invoiceNumber ?? '-' }}</td>
+            <td>{{ payment.order?.invoiceNumber ?? payment.order ?? '-' }}</td>
+            <td>{{ payment.paymentMethod ?? '-' }}</td>
+            <td>{{ payment.amount ?? 0 }}</td>
+            <td>
+              <span class="pill" [class.paid]="statusClass(payment.paymentStatus) === 'paid'" [class.pending]="statusClass(payment.paymentStatus) === 'pending'" [class.failed]="statusClass(payment.paymentStatus) === 'failed'">
+                {{ payment.paymentStatus ?? 'Pending' }}
+              </span>
+            </td>
+            <td>{{ payment.paidAt ? payment.paidAt.slice(0, 10) : '-' }}</td>
+            <td>
+              <div class="btn_action">
+                <button class="action edit" type="button" (click)="openEditModal(payment)">Edit</button>
+                @if (isAdmin) {
+                  <button class="action edit" type="button" (click)="deletePayment(payment._id)">Delete</button>
+                }
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      }
+    </table>
+  </div>
+</section>
+
+@if (showEditModal) {
+  <div
+    class="modal"
+    [class.closing]="isClosing"
+    (animationend)="onModalAnimationEnd($event.animationName)"
+  >
+    <button class="modal-backdrop" type="button" (click)="closeEditModal()"></button>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4>Edit Payment Status</h4>
+        <button class="modal-close" type="button" (click)="closeEditModal()">x</button>
+      </div>
+      <div class="modal-body">
+        <label>
+          Status
+          <select [(ngModel)]="form.paymentStatus">
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+            <option value="Failed">Failed</option>
+          </select>
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn ghost" type="button" (click)="closeEditModal()">Cancel</button>
+        <button class="btn primary" type="button" (click)="savePayment()" [disabled]="saving">Update</button>
+      </div>
+    </div>
+  </div>
+}

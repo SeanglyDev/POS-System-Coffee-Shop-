@@ -1,0 +1,36 @@
+<section class="settings-shell">
+  <header class="settings-header">
+    <p class="eyebrow">Preferences</p>
+    <h1>Settings</h1>
+    <p class="subhead">Control your workspace appearance and account preferences.</p>
+  </header>
+
+  <div class="settings-grid">
+    <article class="card feature-card">
+      <div class="feature-copy">
+        <p class="card-label">Theme Mode</p>
+        <h2>{{ isDark ? 'Dark Mode Enabled' : 'Light Mode Enabled' }}</h2>
+        <p>Switch theme for all pages. Your choice is saved automatically.</p>
+      </div>
+
+      <button class="theme-switch" type="button" (click)="toggleTheme()">
+        <span class="switch-track" [class.on]="isDark">
+          <span class="switch-dot"></span>
+        </span>
+        <span class="switch-text">{{ isDark ? 'Dark' : 'Light' }}</span>
+      </button>
+    </article>
+
+    <article class="card mini-card">
+      <p class="card-label">Layout</p>
+      <h3>Dashboard Style</h3>
+      <p>Current style uses compact cards and data-first tables for admin workflows.</p>
+    </article>
+
+    <article class="card mini-card">
+      <p class="card-label">Account</p>
+      <h3>Session</h3>
+      <p>Role and access permissions are applied automatically from your login profile.</p>
+    </article>
+  </div>
+</section>

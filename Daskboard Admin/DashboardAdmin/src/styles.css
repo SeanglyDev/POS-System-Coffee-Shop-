@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
+/* You can add global styles to this file, and also import other style files */
+body{
+    background-color: #eef3fb;
+}
+
+body.dark{
+    background-color: #0b0d15;
+}
+
+*{
+     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

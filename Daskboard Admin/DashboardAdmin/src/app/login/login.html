@@ -1,0 +1,107 @@
+<main class="login-shell">
+  <section class="login-layout">
+    <aside class="story-panel">
+      <p class="badge">POS ADMIN</p>
+      <h1>Run your coffee floor from one clean dashboard.</h1>
+      <p class="story-copy">
+        Track orders, stock movement, and team activity in real time without switching tools.
+      </p>
+
+      <div class="story-grid">
+        <article class="story-tile">
+          <p class="tile-label">Today Revenue</p>
+          <p class="tile-value">$8,460</p>
+        </article>
+        <article class="story-tile">
+          <p class="tile-label">Open Orders</p>
+          <p class="tile-value">42</p>
+        </article>
+        <article class="story-tile">
+          <p class="tile-label">Low Stock Alerts</p>
+          <p class="tile-value">5</p>
+        </article>
+      </div>
+    </aside>
+
+    <form class="login-card" (ngSubmit)="onSubmit()">
+      <p class="eyebrow">Welcome back</p>
+      <h2>Sign in to Dashboard</h2>
+      <p class="subhead">Use your account credentials to continue.</p>
+
+      <label class="field">
+        <span>Email</span>
+        <input
+          type="email"
+          name="email"
+          placeholder="admin@yourshop.com"
+          [(ngModel)]="email"
+        />
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          name="password"
+          placeholder="Enter your password"
+          [(ngModel)]="password"
+        />
+      </label>
+
+      @if(errorMessage){
+        <p class="form-error">{{ errorMessage }}</p>
+      }
+      <div class="form-row"> 
+        <label class="remember">
+          <input type="checkbox" name="showPassword" [(ngModel)]="showPassword" />
+          <span>Remember me (show password)</span>
+        </label>
+        <button class="text-btn" type="button" (click)="toggleResetForm()">
+          {{ showResetForm ? 'Close reset' : 'Forgot password?' }}
+        </button>
+      </div>
+      @if(showResetForm){
+        <section class="reset-box">
+          <label class="field">
+            <span>Reset email</span>
+            <input
+              type="email"
+              name="resetEmail"
+              placeholder="admin@coffee.com"
+              [(ngModel)]="resetEmail"
+            />
+          </label>
+  
+          <label class="field">
+            <span>New password</span>
+            <input
+              type="password"
+              name="newPassword"
+              placeholder="NewPass@123"
+              [(ngModel)]="newPassword"
+            />
+          </label>
+          @if(resetErrorMessage){
+            <p class="form-error">{{ resetErrorMessage }}</p>
+          }
+          @if(resetSuccessMessage){ 
+            <p class="form-success">{{ resetSuccessMessage }}</p>
+          }
+  
+          <button class="secondary-btn" type="button" [disabled]="resetLoading" (click)="onResetPassword()">
+            {{ resetLoading ? 'Resetting...' : 'Reset password' }}
+          </button>
+        </section>
+      }
+
+      <button class="submit-btn" type="submit" [disabled]="loading">
+        {{ loading ? 'Signing in...' : 'Sign in' }}
+      </button>
+
+      <p class="foot-note">
+        New here?
+        <a routerLink="/register">Create account</a>
+      </p>
+    </form>
+  </section>
+</main>

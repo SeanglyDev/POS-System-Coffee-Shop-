@@ -1,0 +1,12 @@
+<router-outlet *ngIf="!isLoggedIn || isAuthRoute"></router-outlet>
+
+<div class="layout" *ngIf="isLoggedIn && !isAuthRoute">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <app-navbar></app-navbar>
+
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

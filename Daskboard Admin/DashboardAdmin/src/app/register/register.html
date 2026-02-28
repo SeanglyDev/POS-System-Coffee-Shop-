@@ -1,0 +1,136 @@
+ <main class="register-shell">
+  <section class="register-layout">
+    <aside class="intro-panel">
+      <p class="badge">NEW ACCOUNT</p>
+      <h1>Create your admin workspace.</h1>
+      <p class="intro-copy">
+        Set up a secure account to manage products, orders, and staff permissions from one place.
+      </p>
+      <ul class="intro-points">
+        <li>Inventory and order controls</li>
+        <li>Role based access for team members</li>
+        <li>Real-time dashboard insights</li>
+      </ul>
+    </aside>
+
+    <form class="register-card" (ngSubmit)="onSubmit()">
+      <p class="eyebrow">Get started</p>
+      <h2>Create Account</h2>
+      <p class="subhead">Fill your information to register a new admin user.</p>
+
+      <div class="form-grid">
+        <label class="field span-2">
+          <span>Image URL</span>
+          <input
+            type="url"
+            name="image_Url"
+            placeholder="https://example.com/avatar.jpg"
+            [(ngModel)]="image_Url"
+          />
+        </label>
+
+        <label class="field">
+          <span>First name</span>
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First name"
+            [(ngModel)]="firstName"
+          />
+        </label>
+
+        <label class="field">
+          <span>Last name</span>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last name"
+            [(ngModel)]="lastName"
+          />
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input
+            type="email"
+            name="email"
+            placeholder="admin@yourshop.com"
+            [(ngModel)]="email"
+          />
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <input
+            type="password"
+            name="password"
+            placeholder="Create a strong password"
+            [(ngModel)]="password"
+          />
+        </label>
+
+        <label class="field">
+          <span>Gender</span>
+          <select name="gender" [(ngModel)]="gender">
+            <option value="male">Male</option>
+            <option value="female">female</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Role</span>
+          <select name="role" [(ngModel)]="role">
+            <option value="staff">staff</option>
+            <option value="admin">admin</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Phone number</span>
+          <input
+            type="text"
+            name="phoneNumber"
+            placeholder="0123456789"
+            [(ngModel)]="phoneNumber"
+          />
+        </label>
+
+        <label class="field">
+          <span>Date of birth</span>
+          <input
+            type="date"
+            name="dob"
+            [(ngModel)]="dob"
+          />
+        </label>
+
+        <label class="field span-2">
+          <span>Address</span>
+          <textarea
+            name="address"
+            rows="2"
+            placeholder="Street, city, province..."
+            [(ngModel)]="address"
+          ></textarea>
+        </label>
+      </div>
+
+      @if (errorMessage) {
+        <p class="form-error">{{ errorMessage }}</p>
+      }
+      @if (successMessage) {
+        <p class="form-success">{{ successMessage }}</p>
+      }
+
+      <button class="submit-btn" type="submit" [disabled]="loading">
+        {{ loading ? 'Creating...' : 'Create account' }}
+      </button>
+
+      <p class="foot-note">
+        Already have an account?
+        <a routerLink="/login">Sign in</a>
+      </p>
+    </form>
+  </section>
+</main>

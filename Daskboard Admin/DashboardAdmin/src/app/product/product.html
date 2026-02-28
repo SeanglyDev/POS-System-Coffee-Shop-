@@ -1,0 +1,165 @@
+<section class="product-shell">
+  <header class="product-header">
+    <div>
+      <p class="eyebrow">Catalog</p>
+      <h3 class="title">Product Management</h3>
+      <p class="subhead">Manage inventory, pricing, and availability.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn ghost" type="button">Export</button>
+      @if (isAdmin) {
+        <button class="btn primary" type="button" (click)="openAddModal()">Add Product</button>
+      }
+    </div>
+  </header>
+ <div class="orders-head">
+  <div class="tabs">
+    <button class="tab active" type="button">All</button>
+  </div>
+  <div class="pager">
+    <button
+      class="pager-btn"
+      type="button"
+      (click)="prev()"
+      [disabled]="currentPage === 1"
+    >
+      Prev
+    </button>
+    <button
+      class="pager-btn"
+      type="button"
+      (click)="next()"
+      [disabled]="currentPage === totalPages"
+    >
+      Next
+    </button>
+  </div>
+ </div>
+
+ <div class="search-block">
+  <p class="search-label">Search</p>
+  <div class="product-search">
+    <input
+      type="search"
+      placeholder="Search by product name"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchChange()"
+      aria-label="Search products by name"
+    />
+  </div>
+ </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Total Price All Stock</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      @for (product of pagedProducts; track product._id) {
+        <tbody>
+          <tr>
+            <td>
+              <img class="product-image" [src]="product.image_URL" [alt]="product.productName" loading="lazy">
+            </td>
+            <td class="product-cell">
+              <span>{{ product.productName }}</span>
+            </td>
+            <td>{{ product.categories?.categoriesName ?? '-' }}</td>
+            <td>{{ product.price }} $</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.totalPriceAllStock }} $</td>
+            <td>{{ product.description?.length > 40 ? (product.description.substring(0, 40) + '...') : (product.description ?? '-') }}</td>
+            <td>{{ product.status ? 'Active' : 'Inactive' }}</td>
+            <td>{{ product.createdAt ? product.createdAt.slice(0, 10) : '-' }}</td>
+            <td>{{ product.updatedAt ? product.updatedAt.slice(0, 10) : '-' }}</td>
+
+            <td>
+              <div class="btn_action">
+                <button class="action view">View</button>
+                @if (isAdmin) {
+                  <button class="action edit" (click)="editProduct(product)">Edit</button>
+                  <button class="action delete" (click)="deleteProduct(product._id)">Delete</button>
+                }
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      }
+    </table>
+  </div>
+</section>
+<!-- form  -->
+@if (showAddModal && isAdmin) {
+  <div
+    class="modal"
+    [class.closing]="isClosing"
+    (animationend)="onModalAnimationEnd($event.animationName)"
+  >
+    <button class="modal-backdrop" type="button" (click)="closeAddModal()"></button>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4>{{ editingId ? 'Edit Product' : 'Add Product' }}</h4>
+        <button class="modal-close" type="button" (click)="closeAddModal()">x</button>
+      </div>
+      <div class="modal-body">
+        <label>
+          Name
+          <input type="text" placeholder="Product name" [(ngModel)]="form.productName" />
+        </label>
+        <label>
+          Category
+          <select [(ngModel)]="form.categories">
+            @for (category of categories; track category._id) {
+              <option [value]="category._id">{{ category.categoriesName }}</option>
+            }
+          </select>
+        </label>
+        <label>
+          Image URL
+          <input type="url" placeholder="https://..." [(ngModel)]="form.image_URL" />
+        </label>
+        <label>
+          Price
+          <input type="number" placeholder="0.00" [(ngModel)]="form.price" />
+        </label>
+        <label>
+          Stock
+          <input type="number" placeholder="0" [(ngModel)]="form.stock" />
+        </label>
+        <label>
+          Total Price All Stock
+          <input type="number" [value]="(form.price || 0) * (form.stock || 0)" disabled />
+        </label>
+        <label>
+          Description
+          <textarea rows="3" placeholder="Short description" [(ngModel)]="form.description"></textarea>
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" [(ngModel)]="form.status" />
+          Status (Active)
+        </label>
+        <div class="meta-row">
+          <span>Created: Auto date/time</span>
+          <span>Updated: Auto date/time</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn ghost" type="button" (click)="closeAddModal()">Cancel</button>
+        <button class="btn primary" type="button" (click)="saveProduct()" [disabled]="saving || !form.productName || !form.categories">
+          {{ editingId ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
